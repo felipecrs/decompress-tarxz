@@ -1,8 +1,9 @@
 import {Buffer} from 'node:buffer';
+import {Readable} from 'node:stream';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
 import {isStream} from 'is-stream';
-import lzmaNative from 'lzma-native';
+import xzDecompress from 'xz-decompress';
 
 const decompressTarXz = () => async input => {
 	const isBuffer = Buffer.isBuffer(input);
@@ -19,16 +20,24 @@ const decompressTarXz = () => async input => {
 		}
 	}
 
-	const decompressor = lzmaNative.createDecompressor();
-	const result = decompressTar()(decompressor);
+	// Create a web stream from the input
+	const inputWebStream = isBuffer
+		? new ReadableStream({
+			start(controller) {
+				controller.enqueue(input);
+				controller.close();
+			},
+		})
+		: Readable.toWeb(input);
 
-	if (isBuffer) {
-		decompressor.end(input);
-	} else {
-		input.pipe(decompressor);
-	}
+	// Create the XZ decompression stream
+	const xzStream = new xzDecompress.XzReadableStream(inputWebStream);
 
-	return result;
+	// Convert back to Node.js stream for decompress-tar
+	const nodeStream = Readable.fromWeb(xzStream);
+
+	// Use decompress-tar with the decompressed stream
+	return decompressTar()(nodeStream);
 };
 
 export default decompressTarXz;
