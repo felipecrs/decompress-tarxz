@@ -1,15 +1,15 @@
 {
   "name": "@felipecrs/decompress-tarxz",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "decompress tar.xz plugin",
   "license": "MIT",
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/felipecrs/decompress-tarxz.git"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
+    "type": "git",
+    "url": "git+https://github.com/felipecrs/decompress-tarxz.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "author": {
     "name": "Kevin Mårtensson",
     "email": "kevinmartensson@gmail.com",
