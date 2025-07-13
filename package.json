@@ -41,7 +41,7 @@
     "@xhmikosr/decompress-tar": "^8.0.1",
     "file-type": "^21.0.0",
     "is-stream": "^4.0.1",
-    "lzma-native": "^8.0.1"
+    "xz-decompress": "^0.2.2"
   },
   "devDependencies": {
     "ava": "^6.4.1",
