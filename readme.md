@@ -1,33 +1,27 @@
-# @felipecrs/decompress-tarxz [![Build Status](https://travis-ci.org/kevva/decompress-tarxz.svg?branch=master)](https://travis-ci.org/kevva/decompress-tarxz)
+# @felipecrs/decompress-tarxz
 
 > tar.xz decompress plugin
 
-This package is an upgrade on top of original [decompress-targz](https://github.com/kevva/decompress-tarxz).
-
 ## Install
 
+```console
+npm install @felipecrs/decompress-tarxz
 ```
-$ npm install decompress-tarxz
-```
-
 
 ## Usage
 
 ```js
-const decompress = require('decompress');
-const decompressTarxz = require('decompress-tarxz');
+import decompress from '@xhmikosr/decompress';
+import decompressTarXz from '@felipecrs/decompress-tarxz';
 
-(async () => {
-	await decompress('unicorn.tar.xz', 'dist', {
-		plugins: [
-			decompressTarxz()
-		]
-	});
+await decompress('unicorn.tar.xz', 'dist', {
+  plugins: [
+    decompressTarXz()
+  ]
+});
 
-	console.log('Files decompressed');
-})();
+console.log('Files decompressed');
 ```
-
 
 ## API
 
@@ -39,4 +33,4 @@ Returns both a `Promise<Buffer>` and a [Duplex stream](https://nodejs.org/api/st
 
 Type: `Buffer` `Stream`
 
-Buffer or stream to decompress.
+Buffer or Stream to decompress.
