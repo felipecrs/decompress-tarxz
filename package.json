@@ -1,19 +1,30 @@
 {
   "name": "@felipecrs/decompress-tarxz",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "decompress tar.xz plugin",
   "license": "MIT",
-  "repository": "felipecrs/decompress-tarxz",
+  "repository": {
+		"type": "git",
+		"url": "git+https://github.com/felipecrs/decompress-tarxz.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
   "author": {
     "name": "Kevin Mårtensson",
     "email": "kevinmartensson@gmail.com",
     "url": "https://github.com/kevva"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=20"
   },
   "scripts": {
     "test": "xo && ava"
+  },
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
   },
   "files": [
     "index.js"
@@ -27,13 +38,13 @@
     "xz"
   ],
   "dependencies": {
-    "decompress-tar": "^4.1.0",
-    "file-type": "^16.5.2",
-    "is-stream": "^2.0.0",
+    "@xhmikosr/decompress-tar": "^8.0.1",
+    "file-type": "^21.0.0",
+    "is-stream": "^4.0.1",
     "lzma-native": "^8.0.1"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
-    "xo": "^0.39.1"
+    "ava": "^6.4.1",
+    "xo": "^1.1.1"
   }
 }

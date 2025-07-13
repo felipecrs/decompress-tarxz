@@ -1,19 +1,22 @@
-'use strict';
-const decompressTar = require('decompress-tar');
-const FileType = require('file-type');
-const isStream = require('is-stream');
-const lzmaNative = require('lzma-native');
+import {Buffer} from 'node:buffer';
+import decompressTar from '@xhmikosr/decompress-tar';
+import {fileTypeFromBuffer} from 'file-type';
+import {isStream} from 'is-stream';
+import lzmaNative from 'lzma-native';
 
-module.exports = () => async input => {
+const decompressTarXz = () => async input => {
 	const isBuffer = Buffer.isBuffer(input);
-	const type = isBuffer ? await FileType.fromBuffer(input) : null;
 
 	if (!isBuffer && !isStream(input)) {
-		return Promise.reject(new TypeError(`Expected a Buffer or Stream, got ${typeof input}`));
+		throw new TypeError(`Expected a Buffer or Stream, got ${typeof input}`);
 	}
 
-	if (isBuffer && (!type || type.ext !== 'xz')) {
-		return Promise.resolve([]);
+	if (isBuffer) {
+		const type = await fileTypeFromBuffer(input);
+
+		if (!type || type.ext !== 'xz') {
+			return [];
+		}
 	}
 
 	const decompressor = lzmaNative.createDecompressor();
@@ -27,3 +30,5 @@ module.exports = () => async input => {
 
 	return result;
 };
+
+export default decompressTarXz;
