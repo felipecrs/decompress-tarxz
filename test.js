@@ -35,3 +35,21 @@ test('return empty array if non-valid file is supplied', async t => {
 test('throw on wrong input', async t => {
 	await t.throwsAsync(decompressTarXz()('foo'), {message: 'Expected a Buffer or Stream, got string'});
 });
+
+test('many parallel decompressions', async t => {
+	const stream = fs.createReadStream(path.join(import.meta.dirname, 'fixtures/file.tar.xz'));
+	const promises = [];
+	for (let i = 0; i < 1000; i++) {
+		promises.push(decompressTarXz()(stream));
+	}
+
+	const files = await Promise.all(promises);
+
+	const jpgChecks = files.map(file => isJpg(file[0].data));
+	const jpgResults = await Promise.all(jpgChecks);
+
+	for (const [i] of files.entries()) {
+		t.is(files[i][0].path, 'test.jpg');
+		t.true(jpgResults[i]);
+	}
+});

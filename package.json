@@ -1,6 +1,6 @@
 {
   "name": "@felipecrs/decompress-tarxz",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "decompress tar.xz plugin",
   "license": "MIT",
   "repository": {
@@ -38,10 +38,10 @@
     "xz"
   ],
   "dependencies": {
+    "@felipecrs/xz-decompress": "^0.2.3",
     "@xhmikosr/decompress-tar": "^8.0.1",
     "file-type": "^21.0.0",
-    "is-stream": "^4.0.1",
-    "xz-decompress": "^0.2.2"
+    "is-stream": "^4.0.1"
   },
   "devDependencies": {
     "ava": "^6.4.1",
