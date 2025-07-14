@@ -8,12 +8,22 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
-        node: [20, 22, 24]
+        os:
+          - ubuntu-24.04 # amd64
+          - ubuntu-24.04-arm # arm64
+          - macos-15-large # amd64
+          - macos-15-xlarge # arm64
+          - windows-2025 # am64
+          - windows-11-arm # arm64
+        node:
+          - 20
+          - 22
+          - 24
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
