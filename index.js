@@ -3,7 +3,7 @@ import {Readable} from 'node:stream';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
 import {isStream} from 'is-stream';
-import xzDecompress from '@felipecrs/xz-decompress';
+import xzDecompress from 'xz-decompress';
 
 const decompressTarXz = () => async input => {
 	const isBuffer = Buffer.isBuffer(input);
