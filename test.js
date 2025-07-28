@@ -1,8 +1,12 @@
-import fs from 'node:fs';
+import fs, {promises as fsP} from 'node:fs';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {fileTypeFromBuffer} from 'file-type';
 import test from 'ava';
 import decompressTarXz from './index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function isJpg(input) {
 	const fileType = await fileTypeFromBuffer(input);
@@ -10,7 +14,7 @@ async function isJpg(input) {
 }
 
 test('extract file', async t => {
-	const buf = fs.readFileSync(path.join(import.meta.dirname, 'fixtures/file.tar.xz'));
+	const buf = await fsP.readFile(path.join(__dirname, 'fixtures/file.tar.xz'));
 	const files = await decompressTarXz()(buf);
 
 	t.is(files[0].path, 'test.jpg');
@@ -18,7 +22,7 @@ test('extract file', async t => {
 });
 
 test('extract file using streams', async t => {
-	const stream = fs.createReadStream(path.join(import.meta.dirname, 'fixtures/file.tar.xz'));
+	const stream = fs.createReadStream(path.join(__dirname, 'fixtures/file.tar.xz'));
 	const files = await decompressTarXz()(stream);
 
 	t.is(files[0].path, 'test.jpg');
@@ -26,7 +30,7 @@ test('extract file using streams', async t => {
 });
 
 test('return empty array if non-valid file is supplied', async t => {
-	const buf = fs.readFileSync(import.meta.filename);
+	const buf = await fsP.readFile(__filename);
 	const files = await decompressTarXz()(buf);
 
 	t.is(files.length, 0);
@@ -37,9 +41,9 @@ test('throw on wrong input', async t => {
 });
 
 test('many parallel decompressions', async t => {
-	const stream = fs.createReadStream(path.join(import.meta.dirname, 'fixtures/file.tar.xz'));
 	const promises = [];
 	for (let i = 0; i < 1000; i++) {
+		const stream = fs.createReadStream(path.join(__dirname, 'fixtures/file.tar.xz'));
 		promises.push(decompressTarXz()(stream));
 	}
 
