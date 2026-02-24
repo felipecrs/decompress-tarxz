@@ -1,6 +1,6 @@
 {
   "name": "@felipecrs/decompress-tarxz",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "decompress tar.xz plugin",
   "license": "MIT",
   "repository": {
