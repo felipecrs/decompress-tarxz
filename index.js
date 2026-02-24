@@ -2,7 +2,7 @@ import {Buffer} from 'node:buffer';
 import {Readable} from 'node:stream';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
-import isStream from 'is-stream';
+import {isStream} from 'is-stream';
 import xzDecompress from 'xz-decompress';
 
 const decompressTarXz = () => async input => {
@@ -15,7 +15,7 @@ const decompressTarXz = () => async input => {
 	if (isBuffer) {
 		const type = await fileTypeFromBuffer(input);
 
-		if (!type || type.ext !== 'xz') {
+		if (!type || type.mime !== 'application/x-xz') {
 			return [];
 		}
 	}
