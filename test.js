@@ -10,7 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function isJpg(input) {
 	const fileType = await fileTypeFromBuffer(input);
-	return fileType.ext === 'jpg';
+	return fileType?.mime === 'image/jpeg';
 }
 
 test('extract file', async t => {
