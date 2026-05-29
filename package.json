@@ -45,7 +45,6 @@
   "dependencies": {
     "@xhmikosr/decompress-tar": "^9.0.1",
     "file-type": "^21.3.4",
-    "is-stream": "^4.0.1",
     "xz-decompress": "^0.2.3"
   },
   "devDependencies": {
