@@ -2,14 +2,13 @@ import {Buffer} from 'node:buffer';
 import {Readable} from 'node:stream';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
-import {isStream} from 'is-stream';
 import xzDecompress from 'xz-decompress';
 
 const decompressTarXz = () => async input => {
 	const isBuffer = Buffer.isBuffer(input);
 
-	if (!isBuffer && !isStream(input)) {
-		throw new TypeError(`Expected a Buffer or Stream, got ${typeof input}`);
+	if (!isBuffer && !(input instanceof Readable)) {
+		throw new TypeError(`Expected a Buffer or Readable stream, got ${typeof input}`);
 	}
 
 	if (isBuffer) {

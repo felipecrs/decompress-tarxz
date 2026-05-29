@@ -37,7 +37,7 @@ test('return empty array if non-valid file is supplied', async t => {
 });
 
 test('throw on wrong input', async t => {
-	await t.throwsAsync(decompressTarXz()('foo'), {message: 'Expected a Buffer or Stream, got string'});
+	await t.throwsAsync(decompressTarXz()('foo'), {message: 'Expected a Buffer or Readable stream, got string'});
 });
 
 test('many parallel decompressions', async t => {
