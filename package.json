@@ -1,6 +1,6 @@
 {
   "name": "@felipecrs/decompress-tarxz",
-  "version": "5.0.6",
+  "version": "6.0.0",
   "description": "decompress tar.xz plugin",
   "license": "MIT",
   "repository": {
@@ -16,7 +16,7 @@
     "url": "https://github.com/kevva"
   },
   "engines": {
-    "node": ">=20"
+    "node": "^22.20 || ^24.12 || >=25"
   },
   "scripts": {
     "ava": "ava",
@@ -43,9 +43,9 @@
     "xz"
   ],
   "dependencies": {
+    "@napi-rs/lzma": "^1.5.1",
     "@xhmikosr/decompress-tar": "^9.0.1",
-    "file-type": "^21.3.4",
-    "xz-decompress": "^0.2.3"
+    "file-type": "^21.3.4"
   },
   "devDependencies": {
     "ava": "^7.0.0",
