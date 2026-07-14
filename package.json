@@ -45,7 +45,7 @@
   "dependencies": {
     "@napi-rs/lzma": "^1.5.1",
     "@xhmikosr/decompress-tar": "^9.0.1",
-    "file-type": "^21.3.4"
+    "file-type": "^22.0.1"
   },
   "devDependencies": {
     "ava": "^8.0.1",
