@@ -4,31 +4,31 @@ import {createDecompressStream} from '@napi-rs/lzma/xz';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
 
-const decompressTarXz = () => async input => {
-	const isBuffer = Buffer.isBuffer(input);
+export default function decompressTarXz() {
+	return async input => {
+		const isBuffer = Buffer.isBuffer(input);
 
-	if (!isBuffer && !(input instanceof Readable)) {
-		throw new TypeError(`Expected a Buffer or Readable stream, got ${typeof input}`);
-	}
-
-	if (isBuffer) {
-		const type = await fileTypeFromBuffer(input);
-
-		if (!type || type.mime !== 'application/x-xz') {
-			return [];
+		if (!isBuffer && !(input instanceof Readable)) {
+			throw new TypeError(`Expected a Buffer or Readable stream, got ${typeof input}`);
 		}
-	}
 
-	const decompressor = createDecompressStream();
-	const result = decompressTar()(decompressor);
+		if (isBuffer) {
+			const type = await fileTypeFromBuffer(input);
 
-	if (isBuffer) {
-		decompressor.end(input);
-	} else {
-		input.pipe(decompressor);
-	}
+			if (!type || type.mime !== 'application/x-xz') {
+				return [];
+			}
+		}
 
-	return result;
-};
+		const decompressor = createDecompressStream();
+		const result = decompressTar()(decompressor);
 
-export default decompressTarXz;
+		if (isBuffer) {
+			decompressor.end(input);
+		} else {
+			input.pipe(decompressor);
+		}
+
+		return result;
+	};
+}
