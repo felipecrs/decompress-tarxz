@@ -1,42 +1,34 @@
 import {Buffer} from 'node:buffer';
 import {Readable} from 'node:stream';
+import {createDecompressStream} from '@napi-rs/lzma/xz';
 import decompressTar from '@xhmikosr/decompress-tar';
 import {fileTypeFromBuffer} from 'file-type';
-import xzDecompress from 'xz-decompress';
 
-const decompressTarXz = () => async input => {
-	const isBuffer = Buffer.isBuffer(input);
+export default function decompressTarXz() {
+	return async input => {
+		const isBuffer = Buffer.isBuffer(input);
 
-	if (!isBuffer && !(input instanceof Readable)) {
-		throw new TypeError(`Expected a Buffer or Readable stream, got ${typeof input}`);
-	}
-
-	if (isBuffer) {
-		const type = await fileTypeFromBuffer(input);
-
-		if (!type || type.mime !== 'application/x-xz') {
-			return [];
+		if (!isBuffer && !(input instanceof Readable)) {
+			throw new TypeError(`Expected a Buffer or Readable stream, got ${typeof input}`);
 		}
-	}
 
-	// Create a web stream from the input
-	const inputWebStream = isBuffer
-		? new ReadableStream({
-			start(controller) {
-				controller.enqueue(input);
-				controller.close();
-			},
-		})
-		: Readable.toWeb(input);
+		if (isBuffer) {
+			const type = await fileTypeFromBuffer(input);
 
-	// Create the XZ decompression stream
-	const xzStream = new xzDecompress.XzReadableStream(inputWebStream);
+			if (!type || type.mime !== 'application/x-xz') {
+				return [];
+			}
+		}
 
-	// Convert back to Node.js stream for decompress-tar
-	const nodeStream = Readable.fromWeb(xzStream);
+		const decompressor = createDecompressStream();
+		const result = decompressTar()(decompressor);
 
-	// Use decompress-tar with the decompressed stream
-	return decompressTar()(nodeStream);
-};
+		if (isBuffer) {
+			decompressor.end(input);
+		} else {
+			input.pipe(decompressor);
+		}
 
-export default decompressTarXz;
+		return result;
+	};
+}
